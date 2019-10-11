@@ -375,7 +375,21 @@ length(listing_type)</code></pre>
 unique(listing_type)</code></pre>
 <pre><code>## [1] Private room    Entire home/apt Shared room    
 ## Levels: Entire home/apt Private room Shared room</code></pre>
-<pre class="r"><code>#This reminds me that many of these should be factors and not characters or numerics, I will go back into the table and change that.</code></pre>
+<pre class="r"><code>#This reminds me that many of these should be factors and not characters or numerics, I will go back into the table and change that.
+table(listing_type)</code></pre>
+<pre><code>## listing_type
+## Entire home/apt    Private room     Shared room 
+##           25409           22326            1160</code></pre>
+<pre class="r"><code>#Split between the entire hoome and just one room. Very few rooms are shared rooms.</code></pre>
+<pre class="r"><code>listing_Price=AB_NYC_2019[[Col_Type_Names[10]]]
+max(listing_Price)</code></pre>
+<pre><code>## [1] 10000</code></pre>
+<pre class="r"><code>min(listing_Price)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>mean(listing_Price)</code></pre>
+<pre><code>## [1] 152.7207</code></pre>
+<pre class="r"><code>#I wonder how many had the min price of 0, and how many had the max price of 1000.
+#The answer is a decent amount for both, what is up with such expensive prices, and free sometimes.</code></pre>
 
 
 
