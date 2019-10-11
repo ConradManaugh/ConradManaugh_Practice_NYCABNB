@@ -62,4 +62,25 @@ head(sort(table(listing_host),decreasing=T),25)
 head(sort(table(listing_name),decreasing=T),25)
 #I suppose the 1000 is coincidence, but the repeated names do seem generic.
 ```
+```{r Column 4: host_name}
+#I will just do what I did before this time I can see the hosts name. We may have hosts with the same name.
+listing_host_name=AB_NYC_2019[[Col_Type_Names[4]]]
+length(listing_host_name)
+length(unique(listing_host_name))
+#How interesting, their seem to be a large portion of repeated host names. Are they NA, or do hosts have multiple ids, or do people truly share names that often?
+sum(is.na(listing_host_name))
+#Not NA
+head(sort(table(listing_host_name),decreasing=T),25)
+#I see, people only put first names, so repeated names are very commone.
+```
+```{r Column 5: Neighborhood Group}
+#What does this column entail?
+listing_NG=AB_NYC_2019[[Col_Type_Names[5]]]
+length(listing_NG)
+length(unique(listing_NG))
+unique(listing_NG)
+#Okay so just the 5 main neighborhoods of NYC
+sort(table(listing_NG),decreasing=T)
+#Mostly in Manhattan and Brooklyn, very little in the Bronx and Staten Island.
+```
 

@@ -287,6 +287,44 @@ head(sort(table(listing_name),decreasing=T),25)</code></pre>
 ##                                     Cozy Apartment 
 ##                                                  5</code></pre>
 <pre class="r"><code>#I suppose the 1000 is coincidence, but the repeated names do seem generic.</code></pre>
+<pre class="r"><code>#I will just do what I did before this time I can see the hosts name. We may have hosts with the same name.
+listing_host_name=AB_NYC_2019[[Col_Type_Names[4]]]
+length(listing_host_name)</code></pre>
+<pre><code>## [1] 48895</code></pre>
+<pre class="r"><code>length(unique(listing_host_name))</code></pre>
+<pre><code>## [1] 11453</code></pre>
+<pre class="r"><code>#How interesting, their seem to be a large portion of repeated host names. Are they NA, or do hosts have multiple ids, or do people truly share names that often?
+sum(is.na(listing_host_name))</code></pre>
+<pre><code>## [1] 21</code></pre>
+<pre class="r"><code>#Not NA
+head(sort(table(listing_host_name),decreasing=T),25)</code></pre>
+<pre><code>## listing_host_name
+##      Michael        David Sonder (NYC)         John         Alex 
+##          417          403          327          294          279 
+##   Blueground        Sarah       Daniel      Jessica        Maria 
+##          232          227          226          205          204 
+##         Mike       Andrew         Anna        Chris        Laura 
+##          194          190          187          182          182 
+##      Melissa        Emily     Jennifer        James       Rachel 
+##          160          157          154          151          146 
+##         Kara          Amy     Jonathan        Brian        Jason 
+##          143          142          142          140          140</code></pre>
+<pre class="r"><code>#I see, people only put first names, so repeated names are very commone.</code></pre>
+<pre class="r"><code>#What does this column entail?
+listing_NG=AB_NYC_2019[[Col_Type_Names[5]]]
+length(listing_NG)</code></pre>
+<pre><code>## [1] 48895</code></pre>
+<pre class="r"><code>length(unique(listing_NG))</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>unique(listing_NG)</code></pre>
+<pre><code>## [1] &quot;Brooklyn&quot;      &quot;Manhattan&quot;     &quot;Queens&quot;        &quot;Staten Island&quot;
+## [5] &quot;Bronx&quot;</code></pre>
+<pre class="r"><code>#Okay so just the 5 main neighborhoods of NYC
+sort(table(listing_NG),decreasing=T)</code></pre>
+<pre><code>## listing_NG
+##     Manhattan      Brooklyn        Queens         Bronx Staten Island 
+##         21661         20104          5666          1091           373</code></pre>
+<pre class="r"><code>#Mostly in Manhattan and Brooklyn, very little in the Bronx and Staten Island.</code></pre>
 
 
 
