@@ -1,0 +1,52 @@
+---
+title: "Practice Project"
+author: "Conrad Manaugh"
+date: "October 10, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First step is to open the data in R, and see what it looks like. I am going to use New York Air bnb data from Kaggle: https://www.kaggle.com/dgomonov/new-york-city-airbnb-open-data/downloads/new-york-city-airbnb-open-data.zip/3
+```{r Read data into R}
+#Using R Markdown files tab to find the Excel file. I think click load dataset and copy the prerendered code. This mkaes finding the absolute file location easy.
+library(readr)
+AB_NYC_2019 <- read_csv("AB_NYC_2019.csv")
+head(AB_NYC_2019)
+```
+Lets run some simple dyagnostics on the data to see what I have to work with. Learning the column types and definitions etc.
+I begin with the descriptions
+```{r Data Description}
+#I want to get the class info, and practice some things. Lets see if I can make it available in a data frame, which I think looks particurily nice. I get the descriptions from the website where I got the data. The plan is a data set with colname, col class, and col description.
+Col_Types=sapply(AB_NYC_2019,class)
+Col_Type_Names=names(Col_Types)
+Col_Type_Class=unname(Col_Types)
+Col_Type_Descript=c("listing ID","name of the listing","host ID","name of the host","location","area","latitude coordinates","longitude coordinates","listing space type","price in dollars","amount of nights minimum","number of reviews","latest review","number of reviews per month","mount of listing per host","mount of listing per host")
+Data_Description=data.frame(Name=Col_Type_Names,Class=Col_Type_Class,Description=Col_Type_Descript)
+Data_Description
+```
+I want to go through the data column by column to better understand it, and get some basic diagnostics. We may also need to edit some of the columns data for easier analysis.
+```{r Column 1: ID}
+#I will start with ID, which is a numeric identification number for each housing unit. We should have an equal number of id's as we do observations, as this is a dataset of housing units for Air Bnb.
+listing_ID=AB_NYC_2019[[Col_Type_Names[1]]]
+#Above I convert the column of the data with the name as the first in the Column names to a vector
+#A bit convuluted, but now I can copy paste the rest of the code for the other columns
+length(listing_ID)
+length(unique(listing_ID))
+#It is true
+```
+
+```{r Column 2: name}
+#Lets see if the names are also unique
+listing_name=AB_NYC_2019[[Col_Type_Names[2]]]
+length(listing_name)
+length(unique(listing_name))
+#Odd exactly 1000 of the names are not unique, I wonder if they have NA values or something like that. Lets dig deeper. It is odd that it is exactly 1000.
+sum(is.na(listing_name))
+#Only 16 NA's so that cannot be it.
+duplicated_names=unique(listing_name[duplicated(listing_name)]) 
+#The list of 1000 names seems unrelated to one another, is it random chance they are just 1000 exatly? I will keep a duplicate vector to see if I can find a reason in the other columns. Perhaps the houses have the same owners as their duplicates, and or the same locations. 1000 specifically though is strange.
+```
+
