@@ -167,6 +167,12 @@ library(readr)</code></pre>
 ## #   price &lt;dbl&gt;, minimum_nights &lt;dbl&gt;, number_of_reviews &lt;dbl&gt;,
 ## #   last_review &lt;date&gt;, reviews_per_month &lt;dbl&gt;,
 ## #   calculated_host_listings_count &lt;dbl&gt;, availability_365 &lt;dbl&gt;</code></pre>
+<pre class="r"><code>#Coming back to create factors out of the variables we have done so far that need it
+AB_NYC_2019$id=as.factor(AB_NYC_2019$id)
+AB_NYC_2019$host_id=as.factor(AB_NYC_2019$host_id)
+AB_NYC_2019$neighbourhood_group=as.factor(AB_NYC_2019$neighbourhood_group)
+AB_NYC_2019$neighbourhood=as.factor(AB_NYC_2019$neighbourhood)
+AB_NYC_2019$room_type=as.factor(AB_NYC_2019$room_type)</code></pre>
 <p>Lets run some simple dyagnostics on the data to see what I have to work with. Learning the column types and definitions etc. I begin with the descriptions</p>
 <pre class="r"><code>#I want to get the class info, and practice some things. Lets see if I can make it available in a data frame, which I think looks particurily nice. I get the descriptions from the website where I got the data. The plan is a data set with colname, col class, and col description.
 Col_Types=sapply(AB_NYC_2019,class)
@@ -176,15 +182,15 @@ Col_Type_Descript=c(&quot;listing ID&quot;,&quot;name of the listing&quot;,&quot
 Data_Description=data.frame(Name=Col_Type_Names,Class=Col_Type_Class,Description=Col_Type_Descript)
 Data_Description</code></pre>
 <pre><code>##                              Name     Class                 Description
-## 1                              id   numeric                  listing ID
+## 1                              id    factor                  listing ID
 ## 2                            name character         name of the listing
-## 3                         host_id   numeric                     host ID
+## 3                         host_id    factor                     host ID
 ## 4                       host_name character            name of the host
-## 5             neighbourhood_group character                    location
-## 6                   neighbourhood character                        area
+## 5             neighbourhood_group    factor                    location
+## 6                   neighbourhood    factor                        area
 ## 7                        latitude   numeric        latitude coordinates
 ## 8                       longitude   numeric       longitude coordinates
-## 9                       room_type character          listing space type
+## 9                       room_type    factor          listing space type
 ## 10                          price   numeric            price in dollars
 ## 11                 minimum_nights   numeric    amount of nights minimum
 ## 12              number_of_reviews   numeric           number of reviews
@@ -317,8 +323,8 @@ length(listing_NG)</code></pre>
 <pre class="r"><code>length(unique(listing_NG))</code></pre>
 <pre><code>## [1] 5</code></pre>
 <pre class="r"><code>unique(listing_NG)</code></pre>
-<pre><code>## [1] &quot;Brooklyn&quot;      &quot;Manhattan&quot;     &quot;Queens&quot;        &quot;Staten Island&quot;
-## [5] &quot;Bronx&quot;</code></pre>
+<pre><code>## [1] Brooklyn      Manhattan     Queens        Staten Island Bronx        
+## Levels: Bronx Brooklyn Manhattan Queens Staten Island</code></pre>
 <pre class="r"><code>#Okay so just the 5 main neighborhoods of NYC
 sort(table(listing_NG),decreasing=T)</code></pre>
 <pre><code>## listing_NG
@@ -351,6 +357,25 @@ max(listing_latitude)</code></pre>
 <pre class="r"><code>mean(listing_latitude)</code></pre>
 <pre><code>## [1] 40.72895</code></pre>
 <pre class="r"><code>#Only a small amount of lattitudal difference, it is only a city though so expected.</code></pre>
+<pre class="r"><code>listing_longitude=AB_NYC_2019[[Col_Type_Names[8]]]
+max(listing_longitude)</code></pre>
+<pre><code>## [1] -73.71299</code></pre>
+<pre class="r"><code>min(listing_longitude)</code></pre>
+<pre><code>## [1] -74.24442</code></pre>
+<pre class="r"><code>mean(listing_longitude)</code></pre>
+<pre><code>## [1] -73.95217</code></pre>
+<pre class="r"><code>#Larger longitude difference then lattitude</code></pre>
+<pre class="r"><code>#Room types, I wonder if this is chosen from a list, so few unique entries, or if it is writing by the host.
+listing_type=AB_NYC_2019[[Col_Type_Names[9]]]
+length(listing_type)</code></pre>
+<pre><code>## [1] 48895</code></pre>
+<pre class="r"><code>length(unique(listing_type))</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>#Chosen from a list of 3 clearly
+unique(listing_type)</code></pre>
+<pre><code>## [1] Private room    Entire home/apt Shared room    
+## Levels: Entire home/apt Private room Shared room</code></pre>
+<pre class="r"><code>#This reminds me that many of these should be factors and not characters or numerics, I will go back into the table and change that.</code></pre>
 
 
 

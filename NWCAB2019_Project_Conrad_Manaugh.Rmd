@@ -15,6 +15,13 @@ First step is to open the data in R, and see what it looks like. I am going to u
 library(readr)
 AB_NYC_2019 <- read_csv("AB_NYC_2019.csv")
 head(AB_NYC_2019)
+#Coming back to create factors out of the variables we have done so far that need it
+AB_NYC_2019$id=as.factor(AB_NYC_2019$id)
+AB_NYC_2019$host_id=as.factor(AB_NYC_2019$host_id)
+AB_NYC_2019$neighbourhood_group=as.factor(AB_NYC_2019$neighbourhood_group)
+AB_NYC_2019$neighbourhood=as.factor(AB_NYC_2019$neighbourhood)
+AB_NYC_2019$room_type=as.factor(AB_NYC_2019$room_type)
+
 ```
 Lets run some simple dyagnostics on the data to see what I have to work with. Learning the column types and definitions etc.
 I begin with the descriptions
@@ -99,5 +106,21 @@ max(listing_latitude)
 min(listing_latitude)
 mean(listing_latitude)
 #Only a small amount of lattitudal difference, it is only a city though so expected.
+```
+```{r Column 8: longitude}
+listing_longitude=AB_NYC_2019[[Col_Type_Names[8]]]
+max(listing_longitude)
+min(listing_longitude)
+mean(listing_longitude)
+#Larger longitude difference then lattitude
+```
+```{r Column 9: room_type}
+#Room types, I wonder if this is chosen from a list, so few unique entries, or if it is writing by the host.
+listing_type=AB_NYC_2019[[Col_Type_Names[9]]]
+length(listing_type)
+length(unique(listing_type))
+#Chosen from a list of 3 clearly
+unique(listing_type)
+#This reminds me that many of these should be factors and not characters or numerics, I will go back into the table and change that.
 ```
 
