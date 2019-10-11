@@ -213,7 +213,80 @@ sum(is.na(listing_name))</code></pre>
 <pre><code>## [1] 16</code></pre>
 <pre class="r"><code>#Only 16 NA's so that cannot be it.
 duplicated_names=unique(listing_name[duplicated(listing_name)]) 
-#The list of 1000 names seems unrelated to one another, is it random chance they are just 1000 exatly? I will keep a duplicate vector to see if I can find a reason in the other columns. Perhaps the houses have the same owners as their duplicates, and or the same locations. 1000 specifically though is strange.</code></pre>
+#The list of 1000 names seems unrelated to one another, is it random chance they are just 1000 exatly? I will keep a duplicate vector to see if I can find a reason in the other columns. Perhaps the houses have the same owners as their duplicates, and or the same locations. 1000 specifically though is strange.
+length(duplicated_names)</code></pre>
+<pre><code>## [1] 654</code></pre>
+<pre class="r"><code>#The number of dublications isn't interesting, could the 1000 duplicates be just random chance?</code></pre>
+<pre class="r"><code>listing_host=AB_NYC_2019[[Col_Type_Names[3]]]
+length(listing_host)</code></pre>
+<pre><code>## [1] 48895</code></pre>
+<pre class="r"><code>length(unique(listing_host))</code></pre>
+<pre><code>## [1] 37457</code></pre>
+<pre class="r"><code>#Most hosts are unique, but some hosts have multiple locations. I would like to know the hosts with the most locations, setting this up in a dataframe isn't difficult, but I will look to see if someone has made a function for this before making my own.
+head(sort(table(listing_host),decreasing=T),25)</code></pre>
+<pre><code>## listing_host
+## 219517861 107434423  30283594 137358866  12243051  16098958  61391963 
+##       327       232       121       103        96        96        91 
+##  22541573 200380610   1475015   7503643 120762452   2856748 205031545 
+##        87        65        52        52        50        49        49 
+## 190921808  26377263   2119276  19303369  25237492 119669058  76104209 
+##        47        43        39        37        34        34        33 
+## 113805886 213781715 238321374  50760546 
+##        33        33        32        31</code></pre>
+<pre class="r"><code>#I could do something simialar with the names, duh
+head(sort(table(listing_name),decreasing=T),25)</code></pre>
+<pre><code>## listing_name
+##                                     Hillside Hotel 
+##                                                 18 
+##                                Home away from home 
+##                                                 17 
+##                       New york Multi-unit building 
+##                                                 16 
+##                                 Brooklyn Apartment 
+##                                                 12 
+##                   Loft Suite @ The Box House Hotel 
+##                                                 11 
+##                                       Private Room 
+##                                                 11 
+##         Artsy Private BR in Fort Greene Cumberland 
+##                                                 10 
+##                                       Private room 
+##                                                 10 
+##                      Beautiful Brooklyn Brownstone 
+##                                                  8 
+##                            Cozy Brooklyn Apartment 
+##                                                  8 
+##                           Private room in Brooklyn 
+##                                                  8 
+##                       Private room in Williamsburg 
+##                                                  8 
+##                                         Harlem Gem 
+##                                                  7 
+##                                     Bushwick Oasis 
+##                                                  6 
+##                        Cozy East Village Apartment 
+##                                                  6 
+##                                          Cozy Room 
+##                                                  6 
+##                                Home Away From Home 
+##                                                  6 
+##                                    Home Sweet Home 
+##                                                  6 
+## IN MINT CONDITION-STUDIOS EAST 44TH/UNITED NATIONS 
+##                                                  6 
+##                                 New York Apartment 
+##                                                  6 
+##                          Private room in Manhattan 
+##                                                  6 
+##                             West Village Apartment 
+##                                                  6 
+##    A CLASSIC NYC NEIGHBORHOOD-EAST 86TH/5TH AVENUE 
+##                                                  5 
+##                    Charming West Village Apartment 
+##                                                  5 
+##                                     Cozy Apartment 
+##                                                  5</code></pre>
+<pre class="r"><code>#I suppose the 1000 is coincidence, but the repeated names do seem generic.</code></pre>
 
 
 

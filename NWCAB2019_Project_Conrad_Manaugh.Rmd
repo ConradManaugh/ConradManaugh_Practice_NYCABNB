@@ -48,5 +48,18 @@ sum(is.na(listing_name))
 #Only 16 NA's so that cannot be it.
 duplicated_names=unique(listing_name[duplicated(listing_name)]) 
 #The list of 1000 names seems unrelated to one another, is it random chance they are just 1000 exatly? I will keep a duplicate vector to see if I can find a reason in the other columns. Perhaps the houses have the same owners as their duplicates, and or the same locations. 1000 specifically though is strange.
+length(duplicated_names)
+#The number of dublications isn't interesting, could the 1000 duplicates be just random chance?
+```
+
+```{r Column 3: host}
+listing_host=AB_NYC_2019[[Col_Type_Names[3]]]
+length(listing_host)
+length(unique(listing_host))
+#Most hosts are unique, but some hosts have multiple locations. I would like to know the hosts with the most locations, setting this up in a dataframe isn't difficult, but I will look to see if someone has made a function for this before making my own.
+head(sort(table(listing_host),decreasing=T),25)
+#I could do something simialar with the names, duh
+head(sort(table(listing_name),decreasing=T),25)
+#I suppose the 1000 is coincidence, but the repeated names do seem generic.
 ```
 
