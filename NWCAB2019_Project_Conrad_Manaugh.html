@@ -325,6 +325,32 @@ sort(table(listing_NG),decreasing=T)</code></pre>
 ##     Manhattan      Brooklyn        Queens         Bronx Staten Island 
 ##         21661         20104          5666          1091           373</code></pre>
 <pre class="r"><code>#Mostly in Manhattan and Brooklyn, very little in the Bronx and Staten Island.</code></pre>
+<pre class="r"><code>#This seems to be a more specific neighborhood group, smaller then the main 5
+listing_Neighborhood=AB_NYC_2019[[Col_Type_Names[6]]]
+length(listing_Neighborhood)</code></pre>
+<pre><code>## [1] 48895</code></pre>
+<pre class="r"><code>length(unique(listing_Neighborhood))</code></pre>
+<pre><code>## [1] 221</code></pre>
+<pre class="r"><code>head(sort(table(listing_Neighborhood),decreasing=T),10)</code></pre>
+<pre><code>## listing_Neighborhood
+##       Williamsburg Bedford-Stuyvesant             Harlem 
+##               3920               3714               2658 
+##           Bushwick    Upper West Side     Hell's Kitchen 
+##               2465               1971               1958 
+##       East Village    Upper East Side      Crown Heights 
+##               1853               1798               1564 
+##            Midtown 
+##               1545</code></pre>
+<pre class="r"><code>#I dont know enough about New York Neighborhood to know if this is interesting. About 200 Neighborhood though.</code></pre>
+<pre class="r"><code>#This data is begging to be inserted onto the map at some point, for now I will just look at the range and mean.
+listing_latitude=AB_NYC_2019[[Col_Type_Names[7]]]
+max(listing_latitude)</code></pre>
+<pre><code>## [1] 40.91306</code></pre>
+<pre class="r"><code>min(listing_latitude)</code></pre>
+<pre><code>## [1] 40.49979</code></pre>
+<pre class="r"><code>mean(listing_latitude)</code></pre>
+<pre><code>## [1] 40.72895</code></pre>
+<pre class="r"><code>#Only a small amount of lattitudal difference, it is only a city though so expected.</code></pre>
 
 
 

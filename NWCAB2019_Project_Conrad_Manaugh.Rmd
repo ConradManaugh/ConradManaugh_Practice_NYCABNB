@@ -83,4 +83,21 @@ unique(listing_NG)
 sort(table(listing_NG),decreasing=T)
 #Mostly in Manhattan and Brooklyn, very little in the Bronx and Staten Island.
 ```
+```{r Column 6: Neighborhood}
+#This seems to be a more specific neighborhood group, smaller then the main 5
+listing_Neighborhood=AB_NYC_2019[[Col_Type_Names[6]]]
+length(listing_Neighborhood)
+length(unique(listing_Neighborhood))
+head(sort(table(listing_Neighborhood),decreasing=T),10)
+#I dont know enough about New York Neighborhood to know if this is interesting. About 200 Neighborhood though.
+```
+
+```{r Column 7: latitude}
+#This data is begging to be inserted onto the map at some point, for now I will just look at the range and mean.
+listing_latitude=AB_NYC_2019[[Col_Type_Names[7]]]
+max(listing_latitude)
+min(listing_latitude)
+mean(listing_latitude)
+#Only a small amount of lattitudal difference, it is only a city though so expected.
+```
 
