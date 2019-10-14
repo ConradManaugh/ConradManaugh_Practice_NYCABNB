@@ -1,0 +1,183 @@
+---
+title: "Practice Project"
+author: "Conrad Manaugh"
+date: "October 10, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First step is to open the data in R, and see what it looks like. I am going to use New York Air bnb data from Kaggle: https://www.kaggle.com/dgomonov/new-york-city-airbnb-open-data/downloads/new-york-city-airbnb-open-data.zip/3
+```{r Read data into R}
+#Using R Markdown files tab to find the Excel file. I think click load dataset and copy the prerendered code. This mkaes finding the absolute file location easy.
+library(readr)
+AB_NYC_2019 <- read_csv("AB_NYC_2019.csv")
+head(AB_NYC_2019)
+#Coming back to create factors out of the variables we have done so far that need it
+AB_NYC_2019$id=as.factor(AB_NYC_2019$id)
+AB_NYC_2019$host_id=as.factor(AB_NYC_2019$host_id)
+AB_NYC_2019$neighbourhood_group=as.factor(AB_NYC_2019$neighbourhood_group)
+AB_NYC_2019$neighbourhood=as.factor(AB_NYC_2019$neighbourhood)
+AB_NYC_2019$room_type=as.factor(AB_NYC_2019$room_type)
+
+```
+Lets run some simple dyagnostics on the data to see what I have to work with. Learning the column types and definitions etc.
+I begin with the descriptions
+```{r Data Description}
+#I want to get the class info, and practice some things. Lets see if I can make it available in a data frame, which I think looks particurily nice. I get the descriptions from the website where I got the data. The plan is a data set with colname, col class, and col description.
+Col_Types=sapply(AB_NYC_2019,class)
+Col_Type_Names=names(Col_Types)
+Col_Type_Class=unname(Col_Types)
+Col_Type_Descript=c("listing ID","name of the listing","host ID","name of the host","location","area","latitude coordinates","longitude coordinates","listing space type","price in dollars","amount of nights minimum","number of reviews","latest review","number of reviews per month","mount of listing per host","mount of listing per host")
+Data_Description=data.frame(Name=Col_Type_Names,Class=Col_Type_Class,Description=Col_Type_Descript)
+Data_Description
+```
+I want to go through the data column by column to better understand it, and get some basic diagnostics. We may also need to edit some of the columns data for easier analysis.
+```{r Column 1: ID}
+#I will start with ID, which is a numeric identification number for each housing unit. We should have an equal number of id's as we do observations, as this is a dataset of housing units for Air Bnb.
+listing_ID=AB_NYC_2019[[Col_Type_Names[1]]]
+#Above I convert the column of the data with the name as the first in the Column names to a vector
+#A bit convuluted, but now I can copy paste the rest of the code for the other columns
+length(listing_ID)
+length(unique(listing_ID))
+#It is true
+```
+
+```{r Column 2: name}
+#Lets see if the names are also unique
+listing_name=AB_NYC_2019[[Col_Type_Names[2]]]
+length(listing_name)
+length(unique(listing_name))
+#Odd exactly 1000 of the names are not unique, I wonder if they have NA values or something like that. Lets dig deeper. It is odd that it is exactly 1000.
+sum(is.na(listing_name))
+#Only 16 NA's so that cannot be it.
+duplicated_names=unique(listing_name[duplicated(listing_name)]) 
+#The list of 1000 names seems unrelated to one another, is it random chance they are just 1000 exatly? I will keep a duplicate vector to see if I can find a reason in the other columns. Perhaps the houses have the same owners as their duplicates, and or the same locations. 1000 specifically though is strange.
+length(duplicated_names)
+#The number of dublications isn't interesting, could the 1000 duplicates be just random chance?
+```
+
+```{r Column 3: host}
+listing_host=AB_NYC_2019[[Col_Type_Names[3]]]
+length(listing_host)
+length(unique(listing_host))
+#Most hosts are unique, but some hosts have multiple locations. I would like to know the hosts with the most locations, setting this up in a dataframe isn't difficult, but I will look to see if someone has made a function for this before making my own.
+head(sort(table(listing_host),decreasing=T),25)
+#I could do something simialar with the names, duh
+head(sort(table(listing_name),decreasing=T),25)
+#I suppose the 1000 is coincidence, but the repeated names do seem generic.
+```
+```{r Column 4: host_name}
+#I will just do what I did before this time I can see the hosts name. We may have hosts with the same name.
+listing_host_name=AB_NYC_2019[[Col_Type_Names[4]]]
+length(listing_host_name)
+length(unique(listing_host_name))
+#How interesting, their seem to be a large portion of repeated host names. Are they NA, or do hosts have multiple ids, or do people truly share names that often?
+sum(is.na(listing_host_name))
+#Not NA
+head(sort(table(listing_host_name),decreasing=T),25)
+#I see, people only put first names, so repeated names are very commone.
+```
+```{r Column 5: Neighborhood Group}
+#What does this column entail?
+listing_NG=AB_NYC_2019[[Col_Type_Names[5]]]
+length(listing_NG)
+length(unique(listing_NG))
+unique(listing_NG)
+#Okay so just the 5 main neighborhoods of NYC
+sort(table(listing_NG),decreasing=T)
+#Mostly in Manhattan and Brooklyn, very little in the Bronx and Staten Island.
+```
+```{r Column 6: Neighborhood}
+#This seems to be a more specific neighborhood group, smaller then the main 5
+listing_Neighborhood=AB_NYC_2019[[Col_Type_Names[6]]]
+length(listing_Neighborhood)
+length(unique(listing_Neighborhood))
+head(sort(table(listing_Neighborhood),decreasing=T),10)
+#I dont know enough about New York Neighborhood to know if this is interesting. About 200 Neighborhood though.
+```
+
+```{r Column 7: latitude}
+#This data is begging to be inserted onto the map at some point, for now I will just look at the range and mean.
+listing_latitude=AB_NYC_2019[[Col_Type_Names[7]]]
+max(listing_latitude)
+min(listing_latitude)
+mean(listing_latitude)
+#Only a small amount of lattitudal difference, it is only a city though so expected.
+```
+```{r Column 8: longitude}
+listing_longitude=AB_NYC_2019[[Col_Type_Names[8]]]
+max(listing_longitude)
+min(listing_longitude)
+mean(listing_longitude)
+#Larger longitude difference then lattitude
+```
+```{r Column 9: room_type}
+#Room types, I wonder if this is chosen from a list, so few unique entries, or if it is writing by the host.
+listing_type=AB_NYC_2019[[Col_Type_Names[9]]]
+length(listing_type)
+length(unique(listing_type))
+#Chosen from a list of 3 clearly
+unique(listing_type)
+#This reminds me that many of these should be factors and not characters or numerics, I will go back into the table and change that.
+table(listing_type)
+#Split between the entire hoome and just one room. Very few rooms are shared rooms.
+```
+
+
+```{r COlumn 10: Price}
+listing_Price=AB_NYC_2019[[Col_Type_Names[10]]]
+max(listing_Price)
+min(listing_Price)
+mean(listing_Price)
+#I wonder how many had the min price of 0, and how many had the max price of 1000.
+#The answer is a decent amount for both, what is up with such expensive prices, and free sometimes.
+hist(listing_Price)
+#Most prices less then 2000
+hist(head(sort(listing_Price),length(listing_Price)*.95))
+#Without the 5 percent of prices that are the highest
+```
+
+```{r Column 11: Minimum Nights}
+#Is there a correlation between minimum nights and those very expensive listings
+listing_nights=AB_NYC_2019[[Col_Type_Names[11]]]
+max(listing_nights)
+min(listing_nights)
+mean(listing_nights)
+hist(listing_nights)
+head(sort(listing_nights,decreasing=T),25)
+#some of these places have a very long minimum stay
+#Gotta make sure we plot minimum nights vs listing price to see what it looks like.
+
+#Most nights less then a month 
+hist(head(sort(listing_nights),length(listing_nights)*.95))
+```
+
+
+
+```{r Column 12: Review numbers}
+#I expect a correlation between number of reviews and minimum nights, less minimum nights means more people can stay and give reviews
+listing_review=AB_NYC_2019[[Col_Type_Names[12]]]
+max(listing_review)
+min(listing_review)
+mean(listing_review)
+hist(listing_review)
+hist(head(sort(listing_review),length(listing_review)*.95))
+#Seems to follow an expoonential distribtion
+```
+
+```{r Column 13: Last Review}
+listing_rec_rev=AB_NYC_2019[[Col_Type_Names[13]]]
+#This is a descriptor of how recent someone stayed, cant tell how often reviews occur though, so its only approximate.
+
+max_date=sort(listing_rec_rev,decreasing = T)[1]
+
+days_before=as.integer(max_date-listing_rec_rev)
+#Convert dates into a vector of days since the max_date of July 8th
+hist(days_before)
+hist(head(sort(days_before),length(days_before)*.95))
+#Remove outliers
+```
+
