@@ -134,7 +134,7 @@ min(listing_Price)
 mean(listing_Price)
 #I wonder how many had the min price of 0, and how many had the max price of 1000.
 #The answer is a decent amount for both, what is up with such expensive prices, and free sometimes.
-<<<<<<< HEAD
+
 hist(listing_Price)
 #Most prices less then 2000
 hist(head(sort(listing_Price),length(listing_Price)*.95))
@@ -180,11 +180,21 @@ days_before=as.integer(max_date-listing_rec_rev)
 hist(days_before)
 hist(head(sort(days_before),length(days_before)*.95))
 #Remove outliers
-=======
+
 ```
+```{r Column 14: Monthly Review}
+listing_monthlyrev=AB_NYC_2019[[Col_Type_Names[14]]]
+#An average of reviews permonth
+monthrev_nona=listing_monthlyrev[!is.na(listing_monthlyrev)]
+max(monthrev_nona)
+min(monthrev_nona)
+mean(monthrev_nona)
+hist(monthrev_nona)
+hist(head(sort(monthrev_nona),length(monthrev_nona)*.95))
 
-```{r Column 10:}
-
->>>>>>> 7f29b1dffeb68f19ccec13b286dad16927b88798
+#NA is clearly zero, I will have to change that in the data
+```
+```{r}
+Col_Type_Names[15]
 ```
 
