@@ -228,3 +228,38 @@ hist(listing_open)
 
 
 And that is all the columns. Next step is to look at the notes I have made, and think of possible paths of analysis. Then make an outline and see what I can find using my ideas.
+
+
+To do
+*  Change NA's to either 0, or text saying no name, or something along those lines
+*  Check for null values
+*  Use graphical analysis for the entire dataset, then do the same for subsets for each neighborhood group
+*  Figure out something to do with Neighborhoods
+*  Use Long Lat to insert data into map, likely color coded for some sort of metric, like price
+*  Do subsets for room type like we did for neighborhood group
+*  Which roomtype is more likely in each neighborhood
+*  Use price against many other columns in graphical analysis
+    *  Price against room type
+    *  Price against Neighborhood group and or neighborhood
+    *  Price against long lat
+    *  Price against minimum nights
+    *  Price against number of reviews
+    *  Price against most recent stay
+    *  Listing openings
+    *  Against average montly review
+*  Plot for number of reviews
+    *  Number of reviews against minimum nights
+    *  NUmber of reviews against last review
+    *  Against most recent stay
+    *  Check if perfect correlation between average monthly reviews\
+    *  Listing openings
+*  Plots for most recent stay
+    *  Most recent stay against minimum nights
+    *  Against most recent review
+    *  Against monthly reviews
+    *  listing openings
+*  Listing count needs a new dataset without the repeats for analysis of that 
+    *  Where are the listings for these people with multiple listings located, long lat, neighborhood, or group
+    *  What is the typical price, and other typical characteristics. Same or different.
+*  Take out any useful data and create a tableau document of the findings.
+    
