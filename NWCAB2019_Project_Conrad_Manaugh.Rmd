@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-First step is to open the data in R, and see what it looks like. I am going to use New York Air bnb data from Kaggle: https://www.kaggle.com/dgomonov/new-york-city-airbnb-open-data/downloads/new-york-city-airbnb-open-data.zip/3
+First step is to open the data in R, and see what it looks like. I am going to use New York Air bnb data from Kaggle: https://www.kaggle.com/dgomonov/new-york-city-airbnb-open-data
 ```{r Read data into R}
 #Using R Markdown files tab to find the Excel file. I think click load dataset and copy the prerendered code. This mkaes finding the absolute file location easy.
 library(readr)
@@ -30,7 +30,7 @@ I begin with the descriptions
 Col_Types=sapply(AB_NYC_2019,class)
 Col_Type_Names=names(Col_Types)
 Col_Type_Class=unname(Col_Types)
-Col_Type_Descript=c("listing ID","name of the listing","host ID","name of the host","location","area","latitude coordinates","longitude coordinates","listing space type","price in dollars","amount of nights minimum","number of reviews","latest review","number of reviews per month","mount of listing per host","mount of listing per host")
+Col_Type_Descript=c("listing ID","name of the listing","host ID","name of the host","location","area","latitude coordinates","longitude coordinates","listing space type","price in dollars","amount of nights minimum","number of reviews","latest review","number of reviews per month","amount of listing per host","number of days when listing is available for bookingt")
 Data_Description=data.frame(Name=Col_Type_Names,Class=Col_Type_Class,Description=Col_Type_Descript)
 Data_Description
 ```
@@ -194,7 +194,37 @@ hist(head(sort(monthrev_nona),length(monthrev_nona)*.95))
 
 #NA is clearly zero, I will have to change that in the data
 ```
-```{r}
-Col_Type_Names[15]
+```{r Column 15: Listings for each host}
+listing_count=AB_NYC_2019[[Col_Type_Names[15]]]
+#Number of listings each host has
+
+max(listing_count)
+min(listing_count)
+mean(listing_count)
+hist(listing_count)
+
+#Hist without the outliers
+hist(head(sort(listing_count),length(listing_count)*.95))
+#Almost everyone has only 1 listing, lets see how many
+sum(listing_count==1)/sum(listing_count>0)
+#66 percent onoly have 1 listing, thats actually a lot of hosts with multiple listings.
+#This should be wrong though, because it is data organized by listing, not host. So each host with multiple listing has that number of listings listed multiple times. I think the easiert way to fix this would be SQL, which will give me an oppurtunity to use SQL again. I will try to prove that now
+listing_host[which(listing_count==max(listing_count))]
+#Yep, so those histograms are useless, and even more hosts only host 1 location, compared to 66 percent
 ```
 
+
+```{r Column 16: Days listing is open}
+
+listing_open=AB_NYC_2019[[Col_Type_Names[16]]]
+#Days a listing can be open, from 1 to 365 likely
+
+max(listing_open)
+min(listing_open)
+mean(listing_open)
+hist(listing_open)
+#I wonder why zero is an option, why even have a listing if it is never open.
+```
+
+
+And that is all the columns. Next step is to look at the notes I have made, and think of possible paths of analysis. Then make an outline and see what I can find using my ideas.
