@@ -21,6 +21,7 @@ AB_NYC_2019$host_id=as.factor(AB_NYC_2019$host_id)
 AB_NYC_2019$neighbourhood_group=as.factor(AB_NYC_2019$neighbourhood_group)
 AB_NYC_2019$neighbourhood=as.factor(AB_NYC_2019$neighbourhood)
 AB_NYC_2019$room_type=as.factor(AB_NYC_2019$room_type)
+AB_NYC_2019$reviews_per_month[is.na(AB_NYC_2019$reviews_per_month)]=0
 
 ```
 Lets run some simple dyagnostics on the data to see what I have to work with. Learning the column types and definitions etc.
@@ -263,3 +264,35 @@ To do
     *  What is the typical price, and other typical characteristics. Same or different.
 *  Take out any useful data and create a tableau document of the findings.
     
+    
+First thing I am going to do is look for NA's in all of the data, and then change them, I will then insert this code above when the data is loaded in.
+```{r NA search}
+suna=function(col){
+  numb=sum(is.na(col))
+  return(numb)
+}
+sunull=function(col){
+  numb=sum(is.null(col))
+  return(numb)
+}
+sublank=sunull=function(col){
+  numb=sum(col=="")
+  return(numb)
+}
+#Doesnt work on col 13, which is a date column
+sapply(AB_NYC_2019[,-13],sunull)
+sapply(AB_NYC_2019,suna)
+sapply(AB_NYC_2019[,-13],sublank)
+
+#Only NA aree a problem
+#Some NA for names, which means no name inputed, same for host name. Host name is useless though as we have host id.
+#So we have last review and reviews per month that have NA in them, lets see if we can replace those with zero's
+suna(AB_NYC_2019$last_review[is.na(AB_NYC_2019$reviews_per_month)])
+#As expected NA for last review means NA for reviews per month
+sum(AB_NYC_2019$number_of_reviews[is.na(AB_NYC_2019$last_review)])
+#As expected if number of reviews is zero then last review and reviews per month are NA
+
+#So I will replace NA reviews per month with zero reviews per month, but I will leave last reviews that are NA as NA, at least for now.
+#I will edit that up above 
+```
+
